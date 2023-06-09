@@ -29,8 +29,8 @@ Predict for custom inputs using this model
 
 ## PROGRAM:
 ```python
-### Developed by    : Javith farkhan S
-### Register number : 212221240017
+### Developed by    : Gunaseelan G
+### Register number : 212221230031
 ```
 ```python
 import tensorflow as tf 
@@ -79,26 +79,30 @@ print(classification_report(y_test,x_test_predictions))
 ## OUTPUT:
 ### Training Loss, Validation Loss Vs Iteration Plot
 Training Loss, Validation Loss Vs Iteration    
+![out1](https://github.com/Guru-Guna/Implementation-of-Transfer-Learning/assets/93427255/51096d25-5127-4899-8eed-8a4d97d2bd11)
 
 
 
-![EXP 4 1](https://github.com/Javith-farkhan/Implementation-of-Transfer-Learning/assets/94296805/4f3b890a-0f0c-4fdf-92fa-fc6a5d511014)
+
 
 
 ### Accuracy, Validation Accuracy Vs Iteration           
                
+![out2](https://github.com/Guru-Guna/Implementation-of-Transfer-Learning/assets/93427255/39d7f69c-f853-4bf9-811d-7716fdd21ec3)
 
-![EXP 4 2](https://github.com/Javith-farkhan/Implementation-of-Transfer-Learning/assets/94296805/90e0f069-713b-43c3-a0d9-493a2fdfeb06)
+
 
 
 ### Classification Report:
 
-![EXP 4 4](https://github.com/Javith-farkhan/Implementation-of-Transfer-Learning/assets/94296805/b2be19ef-4c83-4ab1-85a1-0d0c13f6d401)
+![out3](https://github.com/Guru-Guna/Implementation-of-Transfer-Learning/assets/93427255/966d18cc-9eab-4bb0-b240-e1ea29b84b7a)
+
 
 
 ### Confusion Matrix:
 
-![EXP 4 3](https://github.com/Javith-farkhan/Implementation-of-Transfer-Learning/assets/94296805/d212c04a-78b1-4a38-8cf4-bf9bdcbeebc4)
+![out4](https://github.com/Guru-Guna/Implementation-of-Transfer-Learning/assets/93427255/5ac1a0f7-728b-4bc6-8dc8-e1fcb36cde81)
+
 
 
 ## Conculsion:
