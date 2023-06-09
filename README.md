@@ -1,22 +1,17 @@
-# <p align="center">Implementation-of-Transfer-Learning</p>
-## Aim
+# EX04--Implementation-of-Transfer-Learning
+## Aim:
 To Implement Transfer Learning for CIFAR-10 dataset classification using VGG-19 architecture.
-## Problem Statement and Dataset
+## Problem Statement and Dataset:
 The CIFAR-10 dataset consists of 60000 32x32 colour images in 10 classes, with 6000 images per class. There are 50000 training images and 10000 test images.
 
 The dataset is divided into five training batches and one test batch, each with 10000 images. The test batch contains exactly 1000 randomly-selected images from each class. The training batches contain the remaining images in random order, but some training batches may contain more images from one class than another. Between them, the training batches contain exactly 5000 images from each class.
 
 Here are the classes in the dataset, as well as 10 random images from each:
-<p align="center">
-<img width='500' src='https://user-images.githubusercontent.com/93427237/232681405-cc61aa61-1ee8-4303-862d-e90ea1d37f13.png'>
- </p>
-  
-VGG19 is a variant of the VGG model which in short consists of 19 layers (16 convolution layers, 3 Fully connected layer, 5 MaxPool layers and 1 SoftMax layer).
 
-Now we have use transfer learning with the help of VGG-19 architecture and use it to classify the CIFAR-10 Dataset
+
+![237872257-0c867e5a-02f9-4e55-b90e-0f50b649c456](https://github.com/sithihajara/Implementation-of-Transfer-Learning/assets/94219582/3b5490e5-300b-4cf7-8556-6e4198e10acd)
 
 ## DESIGN STEPS
-
 ### STEP 1:
 Import tensorflow and preprocessing libraries
 
@@ -25,48 +20,34 @@ Load CIFAR-10 Dataset & use Image Data Generator to increse the size of dataset
 
 ### STEP 3:
 Import the VGG-19 as base model & add Dense layers to it
-
 ### STEP 4:
 Compile and fit the model
 
-### Step 5:
+### STEP 5:
 Predict for custom inputs using this model
 
-## PROGRAM
-Developed By: **Shafeeq Ahamed. S**
-</br>
 
-Register No: **212221230092**
-### Libraries
-```py
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report,confusion_matrix
-
-from keras import Sequential
-from keras.layers import Flatten,Dense,BatchNormalization,Activation,Dropout
-from tensorflow.keras import utils
+## PROGRAM:
+```python
+### Developed by    : Javith farkhan S
+### Register number : 212221240017
+```
+```python
+import tensorflow as tf 
+from tensorflow.keras.datasets import cifar10
+from tensorflow.keras.applications import VGG19 
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Flatten, Dropout
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import ReduceLROnPlateau
+import pandas as pd
+from sklearn.metrics import classification_report,confusion_matrix
+import numpy as np
 
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-
-from keras.datasets import cifar10
-from tensorflow.keras.applications import VGG19
-```
-### Loading Dataset &  One Hot Encoding Outputs
-```py
-(x_train,y_train),(x_test,y_test)=cifar10.load_data()
-
-y_train_onehot = utils.to_categorical(y_train,10)
-y_test_onehot = utils.to_categorical(y_test,10)
-```
-
-### Import VGG-19 model & add dense layers
-```py
-base_model = VGG19(include_top=False, weights = "imagenet",
-                   input_shape = (32,32,3))
+(x_train, y_train), (x_test, y_test) = cifar10.load_data ()
+x_train = x_train.astype ("float32") / 255.0
+x_test = x_test.astype ("float32") / 255.0
+base_model = VGG19 (include_top = False, input_shape = (32, 32, 3))
 
 for layer in base_model.layers:
   layer.trainable = False
@@ -74,51 +55,53 @@ for layer in base_model.layers:
 model = Sequential()
 model.add(base_model)
 model.add(Flatten())
-model.add(Dense(250,activation=("relu")))
-model.add(Dropout(0.2))
-model.add(Dense(100,activation=("relu")))
-model.add(Dropout(0.35))
-model.add(Dense(10,activation=("softmax")))
-model.summary()
+model.add(Dense (512, activation = 'relu'))
+model.add(Dropout (0.5))
+model.add(Dense (10, activation= 'softmax'))
 
-model.compile(optimizer=Adam(learning_rate=0.001), 
-              loss='sparse_categorical_crossentropy', 
-              metrics=['accuracy'])
+model.compile (optimizer = Adam (learning_rate=0.001),
+              loss = 'sparse_categorical_crossentropy',
+              metrics='accuracy'
+              )
 
-learning_rate_reduction = ReduceLROnPlateau(monitor='val_accuracy',patience=3,
-                                            verbose=1,factor=0.5,min_lr=0.00001)
-
-model.fit(x_train, y_train, batch_size=500, epochs=10, validation_data=(x_test, y_test), 
-          callbacks=[learning_rate_reduction])
-```
-### Metrics
-```py
-metrics = pd.DataFrame(model.history.history)
-
+learning_rate_reduction = ReduceLROnPlateau (monitor = 'val_accuracy')
+model.fit(x_train, y_train, batch_size=64, epochs=15, validation_data=(x_test, y_test), callbacks=[learning_rate_reduction])
+metrics = pd.DataFrame (model.history.history)
 metrics[['loss','val_loss']].plot()
 metrics[['accuracy','val_accuracy']].plot()
 
 x_test_predictions = np.argmax(model.predict(x_test), axis=1)
-
 print(confusion_matrix(y_test,x_test_predictions))
 print(classification_report(y_test,x_test_predictions))
 ```
 
 
-## OUTPUT
+## OUTPUT:
 ### Training Loss, Validation Loss Vs Iteration Plot
+Training Loss, Validation Loss Vs Iteration    
 
-Training Loss, Validation Loss Vs Iteration             | Accuracy, Validation Accuracy Vs Iteration                   |               
-:------------------------------------------------------:| :-----------------------------------------------------------:|
-|![image](https://github.com/ShafeeqAhamedS/Implementation-of-Transfer-Learning/assets/93427237/d584954d-6180-4fac-88ae-80d9ec47414b) |![image](https://github.com/ShafeeqAhamedS/Implementation-of-Transfer-Learning/assets/93427237/abc48ad9-1ca7-4bc1-a221-72cd20cb8ad2)
- |
-### Classification Report
-<img width="400" src="https://github.com/ShafeeqAhamedS/Implementation-of-Transfer-Learning/assets/93427237/b6dac570-4221-4f55-8e06-68b0c440b6ba">
 
-### Confusion Matrix
-<img width="350" src="https://github.com/ShafeeqAhamedS/Implementation-of-Transfer-Learning/assets/93427237/4aeedc50-7454-42ae-9031-cfb94fb9027b">
 
-## Conculsion
+![EXP 4 1](https://github.com/Javith-farkhan/Implementation-of-Transfer-Learning/assets/94296805/4f3b890a-0f0c-4fdf-92fa-fc6a5d511014)
+
+
+### Accuracy, Validation Accuracy Vs Iteration           
+               
+
+![EXP 4 2](https://github.com/Javith-farkhan/Implementation-of-Transfer-Learning/assets/94296805/90e0f069-713b-43c3-a0d9-493a2fdfeb06)
+
+
+### Classification Report:
+
+![EXP 4 4](https://github.com/Javith-farkhan/Implementation-of-Transfer-Learning/assets/94296805/b2be19ef-4c83-4ab1-85a1-0d0c13f6d401)
+
+
+### Confusion Matrix:
+
+![EXP 4 3](https://github.com/Javith-farkhan/Implementation-of-Transfer-Learning/assets/94296805/d212c04a-78b1-4a38-8cf4-bf9bdcbeebc4)
+
+
+## Conculsion:
 * We got an Accuracy of 60% with this model.There could be several reasons for not achieving higher accuracy. Here are a few possible explanations:
 ### Dataset compatibility: 
 * VGG19 was originally designed and trained on the ImageNet dataset, which consists of high-resolution images. 
@@ -136,5 +119,7 @@ Training Loss, Validation Loss Vs Iteration             | Accuracy, Validation A
 * If you are limited by computational resources or working with a smaller dataset, the model's capacity might be excessive for the task at hand. 
 * In such cases, using a smaller model architecture or exploring other lightweight architectures like MobileNet or SqueezeNet could be more suitable and provide better accuracy.
 
-## RESULT
+
+
+## RESULT:
 Thus, transfer Learning for CIFAR-10 dataset classification using VGG-19 architecture is successfully implemented.
